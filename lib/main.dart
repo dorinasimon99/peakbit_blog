@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peakbit_blog/services/network_service.dart';
 
 void main() {
   NetworkService.instance.setupDio();

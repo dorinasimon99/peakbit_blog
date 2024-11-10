@@ -14,7 +14,7 @@ class ArticleListRepository {
     try {
       Response response = await _dio.get('/articles/list?page=$page&pageSize=$pageSize');
       if(response.statusCode == 200) {
-        ArticleListModel articles = ArticleListModel.fromJson(jsonDecode(response.data) as Map<String, dynamic>);
+        ArticleListModel articles = ArticleListModel.fromJson(response.data);
         return articles;
       } else {
         String errorMessage = getErrorMessage(response.data);

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:peakbit_blog/services/network_service.dart';
@@ -16,9 +15,9 @@ class TokenService {
 
   Future<void> setupToken() async {
     try {
-      Response response = await _dio.get('/token/generate/${PlatformHelper.instance.currentPlatform.name}');
+      Response response = await _dio.post('/token/generate/${PlatformHelper.instance.currentPlatform.name}');
       if(response.statusCode == 200) {
-        token = TokenModel.fromJson((jsonDecode(response.data) as Map<String, dynamic>));
+        token = TokenModel.fromJson(response.data);
       } else {
         String errorMessage = getErrorMessage(response.data);
         debugPrint("Generate token error: \n$errorMessage");
@@ -30,7 +29,7 @@ class TokenService {
 
   Future<void> renewToken() async {
     try {
-      Response response = await _dio.get('/token/renew');
+      Response response = await _dio.put('/token/renew');
       if(response.statusCode != 200) {
         String errorMessage = getErrorMessage(response.data);
         debugPrint("Renew token error: \n$errorMessage");

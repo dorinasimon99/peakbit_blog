@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -14,14 +12,26 @@ class ArticleRepository {
     try {
       Response response = await _dio.get('/articles/get/$id');
       if(response.statusCode == 200) {
-        ArticleModel article = ArticleModel.fromJson(jsonDecode(response.data) as Map<String, dynamic>);
+        ArticleModel article = ArticleModel.fromJson(response.data);
         return article;
+      } else if(response.statusCode == 401) {
+        response = await _dio.get('/articles/get/$id');
+        if(response.statusCode == 200) {
+          ArticleModel article = ArticleModel.fromJson(response.data);
+          return article;
+        }
+        return null;
       } else {
         String errorMessage = getErrorMessage(response.data);
         debugPrint('Get article list error: \n$errorMessage');
       }
     } catch (e) {
-      debugPrint('Get article list error: ${e.toString()}');
+      if(e is DioException) {
+        String errorMessage = getErrorMessage(e.response?.data);
+        debugPrint('Get article list error: $errorMessage');
+      } else {
+        debugPrint('Get article list error: ${e.toString()}');
+      }
     }
     return null;
   }

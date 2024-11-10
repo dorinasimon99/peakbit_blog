@@ -18,15 +18,16 @@ class NetworkService {
               'X-TOKEN': TokenService.instance.token.token,
               'accept': 'application/json',
             };
-            return handler.next(options);
+            handler.next(options);
           },
           onResponse: (response, handler) {
             if(response.statusCode == 401) {
               TokenService.instance.renewToken();
             }
+            handler.next(response);
           }
         ),
-        LogInterceptor(responseBody: true),
+        LogInterceptor(responseBody: true, requestBody: true),
       ],
     );
   }
