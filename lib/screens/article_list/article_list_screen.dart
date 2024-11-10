@@ -63,7 +63,10 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
             icon: SvgPicture.asset("assets/icons/menu.svg", width: 15,),
           ),
         ],
-        backgroundColor: Colors.white.withOpacity(1),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        shadowColor: Colors.black,
+        elevation: 5,
         centerTitle: true,
       ),
       body: SafeArea(
@@ -125,35 +128,76 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
                 ),
               );
             } else {
-              return ListView.builder(
-                controller: _controller,
-                itemCount: _articles.length,
-                padding: EdgeInsets.symmetric(horizontal: 23),
-                itemBuilder: (BuildContext context, int index) {
-                  if(index == 0) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)?.newest ?? "Legfrissebb",
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 19,),
-                        ArticleItemWidget(
+              return OrientationBuilder(
+                builder: (context, orientation) {
+                  if(orientation == Orientation.portrait) {
+                    return ListView.builder(
+                      controller: _controller,
+                      itemCount: _articles.length,
+                      padding: const EdgeInsets.symmetric(horizontal: 23),
+                      itemBuilder: (BuildContext context, int index) {
+                        if(index == 0) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 33,),
+                              Text(
+                                AppLocalizations.of(context)?.newest ?? "Legfrissebb",
+                                style: const TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 19,),
+                              ArticleItemWidget(
+                                article: _articles[index],
+                                articleContext: context,
+                              ),
+                            ],
+                          );
+                        }
+                        return ArticleItemWidget(
                           article: _articles[index],
                           articleContext: context,
+                        );
+                      },
+                    );
+                  } else {
+                    return SingleChildScrollView(
+                      controller: _controller,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 23),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 33,),
+                            Text(
+                              AppLocalizations.of(context)?.newest ?? "Legfrissebb",
+                              style: const TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 19,),
+                            GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: _articles.length,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 37),
+                              itemBuilder: (BuildContext context, int index) {
+                                return ArticleItemWidget(
+                                  article: _articles[index],
+                                  articleContext: context,
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     );
                   }
-                  return ArticleItemWidget(
-                    article: _articles[index],
-                    articleContext: context,
-                  );
-                },
+
+                }
               );
             }
           },

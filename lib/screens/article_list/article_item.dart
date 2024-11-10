@@ -27,8 +27,7 @@ class ArticleItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
                   article.imageUrl,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   errorBuilder: (context, _, __) => Center(
                       child: SvgPicture.asset(
                     "assets/icons/magnifier.svg",
