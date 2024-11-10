@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
+  NetworkService.instance.setupDio();
   runApp(const MyApp());
 }
 
