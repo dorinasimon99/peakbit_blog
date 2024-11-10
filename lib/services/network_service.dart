@@ -7,9 +7,9 @@ class NetworkService {
 
   NetworkService._();
 
-  void setupDio() {
+  Future<void> setupDio() async {
     _dio.options.baseUrl = 'https://trial.peakbit.tech/api';
-    TokenService.instance.setupToken();
+    await TokenService.instance.setupToken();
     _dio.interceptors.addAll(
       [
         InterceptorsWrapper(

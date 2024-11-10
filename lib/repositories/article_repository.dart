@@ -7,6 +7,7 @@ import '../services/network_service.dart';
 
 class ArticleRepository {
   final _dio = NetworkService.instance.dio;
+  String? errorMessage;
 
   Future<ArticleModel?> getArticle({required int id}) async {
     try {
@@ -22,15 +23,16 @@ class ArticleRepository {
         }
         return null;
       } else {
-        String errorMessage = getErrorMessage(response.data);
-        debugPrint('Get article list error: \n$errorMessage');
+        errorMessage = getErrorMessage(response.data);
+        debugPrint('Get article error: \n$errorMessage');
+
       }
     } catch (e) {
       if(e is DioException) {
-        String errorMessage = getErrorMessage(e.response?.data);
-        debugPrint('Get article list error: $errorMessage');
+        errorMessage = getErrorMessage(e.response?.data);
+        debugPrint('Get article error: $errorMessage');
       } else {
-        debugPrint('Get article list error: ${e.toString()}');
+        debugPrint('Get article error: ${e.toString()}');
       }
     }
     return null;

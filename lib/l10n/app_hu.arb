@@ -1,0 +1,9 @@
+{
+  "general_error": "Valami hiba történt!",
+  "network_error_message": "Kérjük, győződj meg róla, hogy az internetkapcsolattal minden rendben van-e.",
+  "reload": "Újratöltés",
+  "general_error_message": "Kérjük próbáld újra.",
+  "blog": "Blog",
+  "minute": "perc",
+  "newest": "Legfrissebb"
+}
